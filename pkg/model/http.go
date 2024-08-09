@@ -33,6 +33,7 @@ type WebUnit struct {
 	TakVersion     string    `json:"tak_version"`
 	Device         string    `json:"device"`
 	Status         string    `json:"status"`
+	Battery        uint32    `json:"battery"`
 	Text           string    `json:"text"`
 	Color          string    `json:"color"`
 	Icon           string    `json:"icon"`
@@ -101,6 +102,7 @@ func (i *Item) ToWeb() *WebUnit {
 		Send:           i.send,
 		Text:           msg.GetDetail().GetFirst("remarks").GetText(),
 		TakVersion:     "",
+		Battery:        msg.GetTakMessage().GetCotEvent().GetDetail().GetStatus().GetBattery(),
 		Status:         "",
 	}
 
@@ -112,7 +114,14 @@ func (i *Item) ToWeb() *WebUnit {
 		}
 
 		if v := msg.GetTakv(); v != nil {
-			w.TakVersion = strings.Trim(fmt.Sprintf("%s %s", v.GetPlatform(), v.GetVersion()), " ")
+			var ver string
+			if strings.IndexByte(v.GetVersion(), '\n') >= 0 {
+				ver, _, _ = strings.Cut(v.GetVersion(), "\n")
+			} else {
+				ver = v.GetVersion()
+			}
+
+			w.TakVersion = strings.Trim(fmt.Sprintf("%s %s", v.GetPlatform(), ver), " ")
 			w.Device = strings.Trim(fmt.Sprintf("%s, %s", v.GetDevice(), v.GetOs()), " ")
 		}
 	}

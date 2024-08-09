@@ -391,12 +391,12 @@ let app = new Vue({
             }
         },
 
-        getImg: function (item) {
-            return getIconUri(item, false).uri;
+        getImg: function (item, size) {
+            return getIconUri(item, size, false).uri;
         },
 
         milImg: function (item) {
-            return getMilIconUri(item, false).uri;
+            return getMilIconUri(item, 24, false).uri;
         },
 
         dt: function (str) {
@@ -534,11 +534,11 @@ let app = new Vue({
         getRootSidc: function (s) {
             let curr = this.types;
 
-            if (!curr?.next) {
-                return null;
-            }
-
             for (; ;) {
+                if (!curr?.next) {
+                    return null;
+                }
+
                 let found = false;
                 for (const k of curr.next) {
                     if (k.code === s) {
@@ -564,11 +564,11 @@ let app = new Vue({
                 return curr;
             }
 
-            if (!curr?.next) {
-                return null;
-            }
-
             for (; ;) {
+                if (!curr?.next) {
+                    return null;
+                }
+
                 for (const k of curr.next) {
                     if (k.code === s) {
                         return k;
@@ -580,7 +580,6 @@ let app = new Vue({
                     }
                 }
             }
-            return null;
         },
 
         setFormRootSidc: function (s) {

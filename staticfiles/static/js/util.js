@@ -26,13 +26,17 @@ const roles = new Map([
     ['RTO', 'R'],
 ]);
 
-function getIconUri(item, withText) {
+function getIconUri(item, size, withText) {
     if (item.team && item.role) {
         let col = "#555";
         if (item.status !== "Offline") {
             col = colors.get(item.team);
         }
-        return {uri: toUri(circle(24, col, '#000', roles.get(item.role) ?? '')), x: 12, y: 12};
+        return {
+            uri: toUri(circle(size, col, '#000', roles.get(item.role) ?? '')),
+            x: Math.round(size / 2),
+            y: Math.round(size / 2)
+        };
     }
     if (item.icon && item.icon.startsWith("COT_MAPPING_SPOTMAP/")) {
         return {uri: toUri(circle(16, item.color || '#777', '#000', null)), x: 8, y: 8}
@@ -58,11 +62,11 @@ function getIconUri(item, withText) {
     if (item.category === "point") {
         return {uri: toUri(circle(16, item.color || '#f00', '#000', null)), x: 8, y: 8}
     }
-    return getMilIconUri(item, withText);
+    return getMilIconUri(item, size, withText);
 }
 
-function getMilIconUri(item, withText) {
-    let opts = {size: 24};
+function getMilIconUri(item, size, withText) {
+    let opts = {size: size};
 
     if (!item.sidc) {
         return "";
@@ -84,7 +88,7 @@ function getMilIconUri(item, withText) {
 }
 
 function getIcon(item, withText) {
-    let img = getIconUri(item, withText);
+    let img = getIconUri(item, 24, withText);
 
     return L.icon({
         iconUrl: img.uri,
@@ -99,8 +103,9 @@ function circle(size, color, bg, text) {
     let s = '<svg width="' + size + '" height="' + size + '" xmlns="http://www.w3.org/2000/svg"><metadata id="metadata1">image/svg+xml</metadata>';
     s += '<circle style="fill: ' + color + '; stroke: ' + bg + ';" cx="' + x + '" cy="' + x + '" r="' + r + '"/>';
 
-    if (text != null && text !== '') {
-        s += '<text x="50%" y="50%" text-anchor="middle" font-size="12px" font-family="Arial" dy=".3em">' + text + '</text>';
+    if (text) {
+        let fs = Math.floor(size / 2);
+        s += '<text x="50%" y="50%" text-anchor="middle" font-size="' + fs + 'px" font-family="Arial" dy=".3em">' + text + '</text>';
     }
     s += '</svg>';
     return s;
