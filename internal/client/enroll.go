@@ -51,7 +51,7 @@ type CertificateConfig struct {
 }
 
 func NewEnroller(host, user, passwd string, save bool) *Enroller {
-	tlsConf := &tls.Config{InsecureSkipVerify: true}
+	tlsConf := &tls.Config{InsecureSkipVerify: false}
 
 	return &Enroller{
 		logger: slog.Default().With("logger", "enroller"),
