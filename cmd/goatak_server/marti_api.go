@@ -41,7 +41,7 @@ func getMartiApi(app *App, addr string) *air.Air {
 			ClientCAs:    app.config.certPool,
 			RootCAs:      app.config.certPool,
 			ClientAuth:   tls.RequireAndVerifyClientCert,
-			MinVersion:   tls.VersionTLS10,
+			MinVersion:   tls.VersionTLS13,
 		}
 
 		api.Gases = append(api.Gases, SSLCheckHandlerGas(app))
