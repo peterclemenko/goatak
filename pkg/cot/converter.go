@@ -154,7 +154,7 @@ func EventToProto(ev *Event) (*CotMessage, error) {
 	}
 
 	if c := ev.Detail.GetFirst("status"); c != nil {
-		if n, err := strconv.ParseUint(c.GetAttr("battery")); err == nil {
+		if n, err := strconv.Atoi(c.GetAttr("battery")); err == nil {
 			msg.CotEvent.Detail.Status = &cotproto.Status{Battery: uint32(n)}
 		}
 	}
