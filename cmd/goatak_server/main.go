@@ -360,7 +360,7 @@ func (app *App) getTLSConfig() *tls.Config {
 		Leaf:        cert,
 	}
 
-	return &tls.Config{Certificates: []tls.Certificate{tlsCert}, InsecureSkipVerify: true} //nolint:exhaustruct
+	return &tls.Config{Certificates: []tls.Certificate{tlsCert}, InsecureSkipVerify: false} //nolint:exhaustruct
 }
 
 func (app *App) messageProcessLoop() {
