@@ -171,7 +171,7 @@ func (app *App) getTLSConfig() *tls.Config {
 	}
 
 	if !viper.GetBool("ssl.strict") {
-		conf.InsecureSkipVerify = true
+		conf.InsecureSkipVerify = false
 	}
 
 	return conf
